@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<!--
+
+		threejs_ex_02_01.html
+
+		J. Madeira - March 2022
+
+		Adapted / simplified from the Learning Three.js book examples
+
+-->
+
+<head>
+
+	<title>three.js example</title>
+
+	<meta charset="utf-8">
+
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+	<style>
+		body {
+
+			background-color: #ffffff;
+
+			/* To use the complete page */
+
+			margin: 0px;
+
+			overflow: hidden;
+		}
+	</style>
+
+</head>
+
+<body>
+
+	<!-- Div which will hold the renderer output -->
+
+	<div id="WebGL-output"> </div>
+
+	<!-- The library --- Can be a local version -->
+
+	<script type="text/javascript" src="http://threejs.org/build/three.js"></script>
+
+	<!-- Javascript code that runs the Three.js example -->
+
+	<script type="text/javascript">
+
+		// Once everything is loaded, run this function
+
+		function init() {
+
+			// The SCENE
+
+			var scene = new THREE.Scene();
+
+			// The GROUND plane
+
+			var planeGeometry = new THREE.PlaneGeometry(60, 20);
+			var planeMaterial = new THREE.MeshLambertMaterial({ color: 0xcccccc });
+			var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+            plane.receiveShadow = true;
+
+			// Rotate and position the plane
+
+			plane.rotation.x = -0.5 * Math.PI; // TODO: What happens if you comment out this line of code?
+			plane.position.x = 15;
+			plane.position.y = 0;
+			plane.position.z = 0;
+
+			// Add to the scene
+
+			scene.add(plane);
+
+			// Add coordinate AXIS to the scene
+
+			var axes = new THREE.AxesHelper(20);
+
+			scene.add(axes);
+
+			// A CUBE
+
+			var cubeGeometry = new THREE.BoxBufferGeometry(3, 3, 3);
+			var cubeMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000});
+			var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+
+			// Position the cube and add it to the scene
+			// TODO: What happens if you comment out the next three lines of code?
+			cube.position.x = -10;
+			cube.position.y = 1.5;
+			cube.position.z = -3;
+            
+            cube.castShadow = true;
+            cube.receiveShadow = true;
+			scene.add(cube);
+
+			// A SPHERE
+			var sphereGeometry = new THREE.SphereGeometry(3, 12, 12);
+			var sphereMaterial = new THREE.MeshLambertMaterial({ color: 0x7777ff});
+			var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+
+			// Position the sphere and add it to the scene
+			// TODO: What happens if you comment out the next three lines of code? - the sphere is instantiated at the origin
+		
+			sphere.position.x = 20;
+			sphere.position.y = 3;
+			sphere.position.z = 7;
+
+            sphere.castShadow = true;
+            sphere.receiveShadow = true;
+			// TODO; What happens if you increase or decrease the radius of the sphere? - the sphere gets smaller
+			
+			// add the sphere to the scene
+			scene.add(sphere);
+
+			//A CONE
+			var coneGeometry = new THREE.ConeGeometry( 4, 12, 10 );
+			var coneMaterial = new THREE.MeshLambertMaterial( {color: 0x00ff00} );
+			var cone = new THREE.Mesh( coneGeometry, coneMaterial );
+
+			//Position the Cone
+
+			cone.position.x = 30;
+			cone.position.y = 6;
+			cone.position.z = -3;
+            
+            cone.castShadow = true;
+            cone.receiveShadow = true;
+
+			scene.add( cone );
+			
+
+			//A CYLINDER
+
+			var cylinderGeometry = new THREE.CylinderGeometry( 3, 3, 6, 12 );
+			var cylinderMaterial = new THREE.MeshLambertMaterial( {color: 0xffff00} );
+			var cylinder = new THREE.Mesh( cylinderGeometry, cylinderMaterial);
+
+			//Position the Cylinder
+
+			cylinder.position.x = -4;
+			cylinder.position.y = 3;
+			cylinder.position.z = 0;
+
+            cylinder.castShadow = true;
+            cylinder.receiveShadow = true;
+			scene.add( cylinder );
+
+			// A TORUS 
+			var torusGeometry = new THREE.TorusGeometry( 5, 2, 16, 32 );
+			var torusMaterial = new THREE.MeshLambertMaterial( { color: 0xff1493 } );
+			var torus = new THREE.Mesh( torusGeometry, torusMaterial );
+
+			torus.position.x = 12;
+			torus.position.y = 6;
+			torus.position.z = -3;
+            
+            torus.castShadow = true;
+            torus.receiveShadow = true;
+			scene.add( torus );
+
+			//A  secondCYLINDER
+
+			var cylinderGeometry2 = new THREE.CylinderGeometry( 1, 3, 10, 12 );
+			var cylinderMaterial2 = new THREE.MeshLambertMaterial( {color: 0x0000ff} );
+			var cylinder2 = new THREE.Mesh( cylinderGeometry2, cylinderMaterial2);
+
+			//Position the Cylinder
+
+			cylinder2.position.x = 35;
+			cylinder2.position.y = 5;
+			cylinder2.position.z = 5;
+
+            cylinder2.castShadow = true;
+            cylinder2.receiveShadow =true;
+
+			scene.add( cylinder2 );
+			// The CAMERA
+
+			// --- Where the viewer is and how he is looking at the scene
+
+			var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+			// Position the camera
+
+			camera.position.x = -30;
+			camera.position.y = 40;
+			camera.position.z = 30;
+
+			// Point the camera to the center of the scene
+
+			camera.lookAt(scene.position);
+
+			scene.add(camera)
+
+            // SPOTLIGHT
+
+            var spotLight = new THREE.SpotLight( 0xffffff );
+            spotLight.position.set( -40, 60, -10 );
+            spotLight.lookAt(scene.position);
+
+            spotLight.castShadow = true;
+
+            scene.add( spotLight );
+
+			// The RENDERER --- To display the scene on the Web page
+
+			var renderer = new THREE.WebGLRenderer({ antialias: true });
+
+			renderer.setClearColor(new THREE.Color(0xffffff));
+
+			renderer.setPixelRatio(window.devicePixelRatio);
+
+			renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.shadowMap.enabled = true;
+
+			// Add the output of the renderer to the html element
+
+			document.getElementById("WebGL-output").appendChild(renderer.domElement);
+
+			// Render the scene
+
+			renderer.render(scene, camera);
+		}
+
+		window.onload = init
+
+	</script>
+
+</body>
+
+</html>
